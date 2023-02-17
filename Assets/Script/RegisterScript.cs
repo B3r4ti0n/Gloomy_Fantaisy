@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class RegisterScript : MonoBehaviour
 {
     //Adress Api
-    [SerializeField] private string authentificationEndpoint = "http...";
+    [SerializeField] private string authentificationEndpoint = "http://localhost:8080/api/accounts/register";
 
     [SerializeField] private TMP_InputField usernameInputField;
     [SerializeField] private TMP_InputField emailInputField;
