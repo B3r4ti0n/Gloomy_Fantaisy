@@ -30,8 +30,7 @@ public class LoginScript : MonoBehaviour
 
             string result = getJsonScript.CreateUrlParamsObject(url_params_value);
             Debug.Log(result);
-
-            return result;
+            yield return ""+result;
         }else{
             Debug.Log("mot de passe ou pseudo incorrect");
         }
