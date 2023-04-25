@@ -9,40 +9,33 @@ public class LoginScript : MonoBehaviour
 {
     //Adress Api
     [SerializeField] private string authentificationEndpoint = "http://127.0.0.1:8080/api/accounts/login";
-
     [SerializeField] private TMP_InputField usernameInputField;
     [SerializeField] private TMP_InputField passwordInputField;
 
     public void OnLoginClick(){
-        StartCoroutine(Upload());
-    }
-    
-    IEnumerator Upload()
-    {
         string username = usernameInputField.text;
         string password = passwordInputField.text;
 
-        WWWForm form = new WWWForm();
-        form.AddField("name", username);
-        form.AddField("password", password);
+        StartCoroutine(GetUserByNamePassword(username,password));
+    }
 
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("name="+username+"&pasword="+password));
+    IEnumerator GetUserByNamePassword(string username,string password){
+        
+        if (username != "" && password != ""){
+            List<string> url_params_value = new List<string>();
+            url_params_value.Add(username);
+            url_params_value.Add(password);
+            // Récupère une référence à l'objet JsonRequester dans la scène
+            GetJsonScript getJsonScript = GameObject.Find("BtnSignIn").GetComponent<GetJsonScript>();
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:8080/api/accounts/login", formData))
-        {
-            yield return www.SendWebRequest();
+            string result = getJsonScript.CreateUrlParamsObject(url_params_value);
+            Debug.Log(result);
 
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                SceneManager.LoadScene("MapScene");
-                Debug.Log("Form upload complete!");
-            }
+            return result;
+        }else{
+            Debug.Log("mot de passe ou pseudo incorrect");
         }
+
     }
 
 }

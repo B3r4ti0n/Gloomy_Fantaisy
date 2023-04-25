@@ -1172,7 +1172,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 871286369}
         m_TargetAssemblyTypeName: GetJsonScript, Assembly-CSharp
-        m_MethodName: Start
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1232,13 +1232,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 005296acc0ce44f03832df258d8d14a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url_test: http://localhost:8080/api/accounts/login
+  url_test: http://10.160.32.43:8080/api/accounts/login
   url_params_key_test:
   - name
   - password
   url_params_value_test:
-  - alexis
-  - 1234
+  - 
+  - 
 --- !u!1 &964184808
 GameObject:
   m_ObjectHideFlags: 0
