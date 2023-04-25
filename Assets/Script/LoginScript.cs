@@ -14,48 +14,22 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private TMP_InputField passwordInputField;
 
     public void OnLoginClick(){
-        StartCoroutine(TryLogin());
+        StartCoroutine(Upload());
     }
-    private IEnumerator TryLogin(){
-        
-
-        UnityWebRequest request = UnityWebRequest.Post($"{authentificationEndpoint}?name={username}&password={password}");
-        Debug.Log(request);
-        var handler = request.SendWebRequest();
-
-        
-        float startTime = 0.0f;
-        while(!handler.isDone){
-
-            startTime += Time.deltaTime;
-
-            if (startTime > 10.0f){
-                break;
-            }
-
-            yield return null;
-        }
-        if (request.result == UnityWebRequest.Result.Success){
-            Debug.Log(request.downloadHandler.text);
-        } else {
-            SceneManager.LoadScene("MapScene");
-            Debug.Log(request.result);
-            Debug.Log("Unable to connect...");
-        }
-
-        Debug.Log($"{username}:{password}");
-
-        yield return null;
-    }
+    
     IEnumerator Upload()
     {
         string username = usernameInputField.text;
         string password = passwordInputField.text;
 
         WWWForm form = new WWWForm();
-        form.AddField("myField", "myData");
+        form.AddField("name", username);
+        form.AddField("password", password);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://127.0.0.1:8080/api/accounts/login", form))
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("name="+username+"&pasword="+password));
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:8080/api/accounts/login", formData))
         {
             yield return www.SendWebRequest();
 
@@ -65,6 +39,7 @@ public class LoginScript : MonoBehaviour
             }
             else
             {
+                SceneManager.LoadScene("MapScene");
                 Debug.Log("Form upload complete!");
             }
         }
