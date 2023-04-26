@@ -715,7 +715,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter email
+  m_text: Enter name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1097,7 +1097,7 @@ GameObject:
   - component: {fileID: 871286367}
   - component: {fileID: 871286366}
   - component: {fileID: 871286365}
-  - component: {fileID: 871286369}
+  - component: {fileID: 871286368}
   m_Layer: 5
   m_Name: BtnSignIn
   m_TagString: Untagged
@@ -1170,9 +1170,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 871286369}
-        m_TargetAssemblyTypeName: GetJsonScript, Assembly-CSharp
-        m_MethodName: Start
+      - m_Target: {fileID: 871286368}
+        m_TargetAssemblyTypeName: LoginScript, Assembly-CSharp
+        m_MethodName: OnLoginClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1220,7 +1220,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871286363}
   m_CullTransparentMesh: 1
---- !u!114 &871286369
+--- !u!114 &871286368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1229,16 +1229,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 871286363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 005296acc0ce44f03832df258d8d14a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 36ab19747f2c54906a95e25c87d01922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  usernameInputField: {fileID: 337996240}
+  passwordInputField: {fileID: 964184810}
   url_test: http://localhost:8080/api/accounts/login
   url_params_key_test:
   - name
   - password
-  url_params_value_test:
-  - alexis
-  - 1234
+  url_params_value_test: []
+  responseText: 
 --- !u!1 &964184808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,9 +1513,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 005296acc0ce44f03832df258d8d14a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url_test: 
-  url_params_key_test: []
-  url_params_value_test: []
 --- !u!1 &1023885899
 GameObject:
   m_ObjectHideFlags: 0
