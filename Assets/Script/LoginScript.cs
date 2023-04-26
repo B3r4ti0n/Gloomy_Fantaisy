@@ -20,6 +20,7 @@ public class LoginScript : MonoBehaviour
     // Params:
     //  - url_params_key: List<string>
     //  - url_params_value: List<string>
+    // Return: void
     public void OnLoginClick(){
 
         string username = usernameInputField.text;
@@ -36,6 +37,7 @@ public class LoginScript : MonoBehaviour
                 url_params_value = url_params_value_test;
             }
 
+            // Create string with params Url
             string paramsURL = "{";
             if(url_params_key_test.Count == url_params_value.Count) {
                 for(int nKey = 0; nKey <= url_params_key_test.Count-1; nKey++) {
@@ -48,46 +50,48 @@ public class LoginScript : MonoBehaviour
             }
             paramsURL+="}";
 
+            // Start function GetRequest to async method
             StartCoroutine(GetRequest(paramsURL));
 
         }else{
+            // Else not password or pseudo given in input
             Debug.Log("Mot de passe ou pseudo incorrect");
         }
     }
 
+    // Function send Request to users table with api 
+    // Params:
+    //  - paramsURL: String
+    // Return: IEnumerator
     IEnumerator GetRequest(string paramsURL){
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
-        // Créer une requête POST avec l'URL cible
+
+        // Create a Put request with url target
         UnityWebRequest request = UnityWebRequest.Put(url_test, "application/json");
-    
-        // Ajouter les en-têtes nécessaires
         request.SetRequestHeader("Content-Type", "application/json");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
 
-        // Créer un gestionnaire de téléchargement pour la réponse
+        // Create a download handler to recover result request
         DownloadHandler downloadHandler = new DownloadHandlerBuffer();
         request.downloadHandler = downloadHandler;
         
-        // Envoyer la requête
+        // Send request
         yield return request.SendWebRequest();
  
-        // Vérifier s'il y a une erreur
+        // Check if request result done or error
         if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log(request.error);
         }
         else
         {
-            // Convertir les données de réponse en chaîne
+            // Convert DownloadHandler type in string UTF8
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
             
+            // Add your code on ligne 83 to ligne "yield return responseText;"
             SceneManager.LoadScene("MapScene");
 
-            // Utiliser la chaîne de réponse
             yield return responseText;
         }
-
     }
-
-    
 }
