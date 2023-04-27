@@ -22,12 +22,12 @@ public class CreateStatScript : MonoBehaviour
     void Start()
     {
         validButton.onClick.AddListener(CreateStats);
-        Debug.Log(LoginScript.userLogged.id);
     }
 
     // Update is called once per frame
     void CreateStats()
     {
+        //Base stats on create account
         string id = ""+LoginScript.userLogged.id;
         string Race = nameRace.text;
         string ID_Level = "1";
@@ -41,6 +41,7 @@ public class CreateStatScript : MonoBehaviour
         string Speed_value = "10";
         string Mana_value = "100";
 
+        //Params Url
         List<string> url_params_value = new List<string>();
         
         url_params_value.Add(id);
@@ -56,10 +57,6 @@ public class CreateStatScript : MonoBehaviour
         url_params_value.Add(Speed_value);
         url_params_value.Add(Mana_value);
 
-        for (int i = 0; i < 12  ; i++)
-        {
-            Debug.Log(url_params_value[i]);
-        }
         if (url_params_value == null){
             url_params_value = url_params_value_test;
         }
@@ -76,7 +73,6 @@ public class CreateStatScript : MonoBehaviour
             }
         }
         paramsURL+="}";
-        Debug.Log(paramsURL);
         // Start function GetRequest to async method
         StartCoroutine(GetRequest(paramsURL));
     
@@ -106,7 +102,6 @@ public class CreateStatScript : MonoBehaviour
         {
             // Convert DownloadHandler type in string UTF8
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
-            Debug.Log(responseText);
 
             // Convert responseText string in object
             LoginScript.userLogged = JsonUtility.FromJson<UserLogged>(responseText);

@@ -7,14 +7,6 @@ using TMPro;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-// Create object response api
-[Serializable]
-public class UserLogged {
-    public int id;
-    public string name;
-    public string email;
-    public string ID_Stats;
-}
 
 public class LoginScript : MonoBehaviour
 {
@@ -26,6 +18,7 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private List<string> url_params_value_test;
     [SerializeField] private string responseText = "";
 
+    //New user Logged
     public static UserLogged userLogged = new UserLogged();
 
     // Get params with textfield and create paramsURL
@@ -101,8 +94,8 @@ public class LoginScript : MonoBehaviour
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
 
             // Convert responseText string in object
-            LoginScript.userLogged = JsonUtility.FromJson<UserLogged>(responseText);
-            Debug.Log(userLogged.name);
+            var responseJson = JsonUtility.FromJson<UserLogged>(responseText);
+            LoginScript.userLogged = responseJson;
             
             //If user have a race scene Map
             if (userLogged.ID_Stats != "")
