@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -5,6 +6,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+
+// Create object response api
+[Serializable]
+public class MyObject {
+    public int accountId;
+    public string token;
+    public string race;
+}
 
 public class LoginScript : MonoBehaviour
 {
@@ -87,9 +96,17 @@ public class LoginScript : MonoBehaviour
         {
             // Convert DownloadHandler type in string UTF8
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
+
+            // Convert responseText string in object
+            MyObject myObject = JsonUtility.FromJson<MyObject>(responseText);
             
-            // Add your code on ligne 83 to ligne "yield return responseText;"
-            SceneManager.LoadScene("MapScene");
+            //If user have a race scene Map
+            if (myObject.race != "")
+            {
+                SceneManager.LoadScene("MapScene");
+            }else{
+                SceneManager.LoadScene("ChooseCharaScene");
+            }
 
             yield return responseText;
         }
