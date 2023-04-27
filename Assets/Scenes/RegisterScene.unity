@@ -1851,10 +1851,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5807408b6bf4a299b94ae502290227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  authentificationEndpoint: http...
+  url_test: http://localhost:8080/api/accounts/register
+  url_params_key_test:
+  - name
+  - email
+  - password
+  url_params_value_test: []
   usernameInputField: {fileID: 132139767}
   emailInputField: {fileID: 1353757587}
   passwordInputField: {fileID: 204101341}
+  responseText: 
 --- !u!1 &1353757586
 GameObject:
   m_ObjectHideFlags: 0

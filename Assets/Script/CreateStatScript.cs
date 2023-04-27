@@ -18,6 +18,7 @@ public class CreateStatScript : MonoBehaviour
     [SerializeField] private List<string> url_params_value_test;
     [SerializeField] private string responseText = "";
 
+    public static UserLogged userLogged = new UserLogged();
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +28,15 @@ public class CreateStatScript : MonoBehaviour
     // Update is called once per frame
     void CreateStats()
     {
+        if (LoginScript.userLogged.id != 0)
+        {
+            userLogged = LoginScript.userLogged;
+        }else
+        {
+            userLogged = RegisterScript.userLogged;
+        }
         //Base stats on create account
-        string id = ""+LoginScript.userLogged.id;
+        string id = ""+userLogged.id;
         string Race = nameRace.text;
         string ID_Level = "1";
         string Exp = "0";
@@ -104,7 +112,9 @@ public class CreateStatScript : MonoBehaviour
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
 
             // Convert responseText string in object
-            LoginScript.userLogged = JsonUtility.FromJson<UserLogged>(responseText);
+            userLogged = JsonUtility.FromJson<UserLogged>(responseText);
+            Debug.Log(userLogged.stats.Gold);
+            Debug.Log(userLogged.stats.Race);
             
             SceneManager.LoadScene("MapScene");
 
