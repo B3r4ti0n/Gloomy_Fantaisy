@@ -393,6 +393,7 @@ GameObject:
   - component: {fileID: 177429579}
   - component: {fileID: 177429578}
   - component: {fileID: 177429577}
+  - component: {fileID: 177429580}
   m_Layer: 5
   m_Name: yesButton
   m_TagString: Untagged
@@ -503,6 +504,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177429575}
   m_CullTransparentMesh: 1
+--- !u!114 &177429580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177429575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50919d6a416384732b1f1099abcc2404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  validButton: {fileID: 177429577}
+  nameRace: {fileID: 31207879}
+  url_test: http://localhost:8080/api/accounts/stats
+  url_params_key_test:
+  - id
+  - Race
+  - ID_Level
+  - Exp
+  - Gold
+  - Premium_gold
+  - Health_Point
+  - Offensive_value
+  - Defensive_value
+  - Intelligence_value
+  - Speed_value
+  - Mana_value
+  url_params_value_test: []
+  responseText: 
 --- !u!1 &267633987
 GameObject:
   m_ObjectHideFlags: 0

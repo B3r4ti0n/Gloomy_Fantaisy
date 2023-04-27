@@ -9,10 +9,11 @@ using UnityEngine.SceneManagement;
 
 // Create object response api
 [Serializable]
-public class MyObject {
-    public int accountId;
-    public string token;
-    public string race;
+public class UserLogged {
+    public int id;
+    public string name;
+    public string email;
+    public string ID_Stats;
 }
 
 public class LoginScript : MonoBehaviour
@@ -24,6 +25,8 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private List<string> url_params_key_test;
     [SerializeField] private List<string> url_params_value_test;
     [SerializeField] private string responseText = "";
+
+    public static UserLogged userLogged = new UserLogged();
 
     // Get params with textfield and create paramsURL
     // Params:
@@ -98,10 +101,11 @@ public class LoginScript : MonoBehaviour
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
 
             // Convert responseText string in object
-            MyObject myObject = JsonUtility.FromJson<MyObject>(responseText);
+            LoginScript.userLogged = JsonUtility.FromJson<UserLogged>(responseText);
+            Debug.Log(userLogged.name);
             
             //If user have a race scene Map
-            if (myObject.race != "")
+            if (userLogged.ID_Stats != "")
             {
                 SceneManager.LoadScene("MapScene");
             }else{
