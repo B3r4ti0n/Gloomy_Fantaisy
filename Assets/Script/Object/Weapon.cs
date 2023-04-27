@@ -5,7 +5,9 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField]
-    public int damage;
+    public int maxDamage;
+    [SerializeField]
+    public int MinDamage;
 
     [SerializeField]
     public int durability;
