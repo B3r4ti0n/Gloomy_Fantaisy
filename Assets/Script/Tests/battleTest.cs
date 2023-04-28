@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Player;
-using PlayerControler;
+// using Player;
+// using PlayerControler;
 
 public class battleTest
 {
@@ -14,6 +14,7 @@ public class battleTest
     {
         // Player player = new Player();
         // player.SetMaxHealth(100);
+        
         // player.SetArmor(0);
         // player.SetMana(100);
         // player.SetSpeed(10);
