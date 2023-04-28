@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -5,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+
 
 public class LoginScript : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private List<string> url_params_key_test;
     [SerializeField] private List<string> url_params_value_test;
     [SerializeField] private string responseText = "";
+
+    //New user Logged
+    public static UserLogged userLogged = new UserLogged();
 
     // Get params with textfield and create paramsURL
     // Params:
@@ -87,9 +92,18 @@ public class LoginScript : MonoBehaviour
         {
             // Convert DownloadHandler type in string UTF8
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
+
+            // Convert responseText string in object
+            var responseJson = JsonUtility.FromJson<UserLogged>(responseText);
+            LoginScript.userLogged = responseJson;
             
-            // Add your code on ligne 83 to ligne "yield return responseText;"
-            SceneManager.LoadScene("MapScene");
+            //If user have a race scene Map
+            if (userLogged.ID_Stats != "")
+            {
+                SceneManager.LoadScene("MapScene");
+            }else{
+                SceneManager.LoadScene("ChooseCharaScene");
+            }
 
             yield return responseText;
         }
