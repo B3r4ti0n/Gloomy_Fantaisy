@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: prod
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: prod
+      ME_CONFIG_MONGODB_URL: mongodb://root:prod@mongo:27017/
+    
+  node:
+    image: node:10.16.3
+    volumes:
+      - "./Api:/var/www"
+    ports:
+      - "8080:3000"
+    links:
+      - mongo
+    command: bash -c "cd /var/www && ./node_modules/.bin/pm2 start startup.json --name API --no-daemon"
+
+volumes: 
+  mongo-data: {}
