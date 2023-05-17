@@ -45,5 +45,16 @@ namespace Mapbox.Examples
             // Ajouter ici le code pour gérer le clic sur le texte du POI, par exemple pour ouvrir une fenêtre contextuelle avec des informations supplémentaires sur le POI.
             Debug.Log("Clic sur le POI : " + _text.text);
         }
+
+        void OnMouseDown()
+        {
+            Debug.Log("Clic détecté !");
+            ClickTest();
+        }
+
+        void ClickTest()
+        {
+            Debug.Log(_text.text);
+        }
     }
 }
