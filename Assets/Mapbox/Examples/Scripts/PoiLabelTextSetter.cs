@@ -7,7 +7,7 @@ namespace Mapbox.Examples
     using System.Collections.Generic;
     using UnityEngine.UI;
 
-    public class PoiLabelTextSetter : MonoBehaviour, IFeaturePropertySettable, IPointerClickHandler
+    public class PoiLabelTextSetter : MonoBehaviour, IFeaturePropertySettable
     {
         [SerializeField]
         Text _text;
@@ -16,7 +16,6 @@ namespace Mapbox.Examples
 
         public void Set(Dictionary<string, object> props)
         {
-			Debug.Log("JE SUIS UN TESTTTT");
             _text.text = "";
 
             if (props.ContainsKey("name"))
@@ -40,12 +39,6 @@ namespace Mapbox.Examples
             LayoutRebuilder.ForceRebuildLayoutImmediate(backgroundRect);
         }
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            // Ajouter ici le code pour gérer le clic sur le texte du POI, par exemple pour ouvrir une fenêtre contextuelle avec des informations supplémentaires sur le POI.
-            Debug.Log("Clic sur le POI : " + _text.text);
-        }
-
         void OnMouseDown()
         {
             Debug.Log("Clic détecté !");
@@ -55,6 +48,16 @@ namespace Mapbox.Examples
         void ClickTest()
         {
             Debug.Log(_text.text);
+            PopUpManager popupManager = FindObjectOfType<PopUpManager>();
+            if (popupManager != null)
+            {
+                Debug.Log("PopUpActiver");
+                popupManager.ActivatePopup();
+            }
+            else
+            {
+                Debug.LogWarning("Le gestionnaire de pop-up n'a pas été trouvé dans la scène.");
+            }
         }
     }
 }
