@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 750.5, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222370072117198688
@@ -307,7 +307,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 114349136819514582}
   _background: {fileID: 114704683156925328}
-  popupPrefab: {fileID: 1707885508695930}
 --- !u!222 &4311493330239668947
 CanvasRenderer:
   m_ObjectHideFlags: 0

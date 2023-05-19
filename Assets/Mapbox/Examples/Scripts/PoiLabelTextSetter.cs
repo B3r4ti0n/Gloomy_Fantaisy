@@ -14,6 +14,8 @@ namespace Mapbox.Examples
         [SerializeField]
         Image _background;
 
+        private Dictionary<string, string> poiData;
+
         public void Set(Dictionary<string, object> props)
         {
             _text.text = "";
@@ -30,6 +32,13 @@ namespace Mapbox.Examples
             {
                 _text.text = props["type"].ToString();
             }
+
+            poiData = new Dictionary<string, string>();
+            foreach (var prop in props)
+            {
+                poiData[prop.Key] = prop.Value.ToString();
+            }
+
             RefreshBackground();
         }
 
@@ -51,8 +60,8 @@ namespace Mapbox.Examples
             PopUpManager popupManager = FindObjectOfType<PopUpManager>();
             if (popupManager != null)
             {
-                Debug.Log("PopUpActiver");
-                popupManager.ActivatePopup();
+                Debug.Log("PopUpActivé");
+                popupManager.ActivatePopup(poiData);
             }
             else
             {

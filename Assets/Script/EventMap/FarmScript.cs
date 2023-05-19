@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FarmScript : MonoBehaviour
 {
     [SerializeField]
-    Button farmButton;
+    private Button farmButton;
     public Text messageText;
 
     [SerializeField]
@@ -39,13 +39,12 @@ public class FarmScript : MonoBehaviour
             if (cooldownTimer <= 0f)
             {
                 isCooldown = false;
-                popupObject.SetActive(false);
                 clickCount = 0;
                 cooldownTimer = 120f;
             }
             else
             {
-                popUpText.text = "Vous avez déjà tout récupéré. Temps restant : " + Mathf.Ceil(cooldownTimer) + " secondes";
+                UpdateCooldownPopupText();
             }
         }
         else if (messages.Count > 0)
@@ -67,41 +66,42 @@ public class FarmScript : MonoBehaviour
         if (isCooldown)
         {
             popupObject.SetActive(true);
-            popUpText.text = "Vous avez déjà tout récupéré. Temps restant : " + Mathf.Ceil(cooldownTimer) + " secondes";
+            UpdateCooldownPopupText();
             return;
         }
+
         clickCount++;
 
         if (clickCount <= 3)
-    {
-        if (clickCount == 1)
         {
-            int experienceValue = Random.Range(10, 51);
-            messages.Add("Experiences: " + experienceValue);
-        }
-        else if (clickCount == 2)
-        {
-            int gloomGoldValue = Random.Range(10, 51);
-            messages.Add("GloomGold: " + gloomGoldValue);
-        }
-        else if (clickCount == 3)
-        {
-            int randomIndex = Random.Range(0, 2);
-            string potionName = (randomIndex == 0) ? "potion 1" : "potion 2";
-            messages.Add("Object: " + potionName);
-        }
+            if (clickCount == 1)
+            {
+                int experienceValue = Random.Range(10, 51);
+                messages.Add("Experiences: " + experienceValue);
+            }
+            else if (clickCount == 2)
+            {
+                int gloomGoldValue = Random.Range(10, 51);
+                messages.Add("GloomGold: " + gloomGoldValue);
+            }
+            else if (clickCount == 3)
+            {
+                int randomIndex = Random.Range(0, 2);
+                string potionName = (randomIndex == 0) ? "potion 1" : "potion 2";
+                messages.Add("Object: " + potionName);
+            }
 
-        timer = messageDuration;
-    }
+            timer = messageDuration;
+        }
         else
         {
             isCooldown = true;
             popupObject.SetActive(true);
-            popUpText.text = "Vous avez déjà tout récupéré. Temps restant : " + Mathf.Ceil(cooldownTimer) + " secondes";
+            UpdateCooldownPopupText();
             StartCoroutine(ClearMessagesAfterDelay(2f));
-
         }
     }
+
     IEnumerator ClearMessagesAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -112,5 +112,13 @@ public class FarmScript : MonoBehaviour
     {
         messages.Clear();
         messageText.text = "";
+    }
+
+    void UpdateCooldownPopupText()
+    {
+        if (popupObject.activeSelf)
+        {
+            popUpText.text = "Vous avez déjà tout récupéré. Temps restant : " + Mathf.Ceil(cooldownTimer) + " secondes";
+        }
     }
 }
