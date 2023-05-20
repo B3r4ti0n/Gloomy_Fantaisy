@@ -7,9 +7,14 @@ using TMPro;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
+
+
 public class MongoDBScript : MonoBehaviour
 {
-    IEnumerator GetRequest(string paramsURL, System.func<bool> fonction){
+    private string url_test;
+    private string responseText;
+
+    IEnumerator GetRequest(string paramsURL, System.Func<string,bool> GetResult){
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
 
         // Create a Put request with url target
@@ -34,23 +39,13 @@ public class MongoDBScript : MonoBehaviour
             // Convert DownloadHandler type in string UTF8
             responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
 
-            // Convert responseText string in object
-            var responseJson = JsonUtility.FromJson<UserLogged>(responseText);
-            LoginScript.userLogged = responseJson;
-            
-            //If user have a race scene Map
-            if (userLogged.ID_Stats != "")
-            {
-                SceneManager.LoadScene("MapScene");
-            }else{
-                SceneManager.LoadScene("ChooseCharaScene");
-            }
+            GetResult(responseText);
 
             yield return responseText;
         }
     }
 
-    public string CreateUrlBodyRequest(array<string> url_params_key_test, array<string> url_params_value){
+    public string CreateUrlBodyRequest(List<string> url_params_key_test, List<string> url_params_value){
 
         string paramsURL = "{";
 
@@ -65,7 +60,7 @@ public class MongoDBScript : MonoBehaviour
         }
         paramsURL+="}";
         
-        return paramsURL
+        return paramsURL;
     }
 
 }
