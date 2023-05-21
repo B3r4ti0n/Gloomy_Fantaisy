@@ -11,10 +11,10 @@ using UnityEngine.SceneManagement;
 
 public class MongoDBScript : MonoBehaviour
 {
-    private string url_test;
+    [SerializeField] private string url_test;
     private string responseText;
 
-    IEnumerator GetRequest(string paramsURL, System.Func<string,bool> GetResult){
+    public IEnumerator GetRequest(string paramsURL, System.Func<string,bool> GetResult){
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
 
         // Create a Put request with url target
@@ -59,7 +59,7 @@ public class MongoDBScript : MonoBehaviour
             }
         }
         paramsURL+="}";
-        
+        Debug.Log(paramsURL);
         return paramsURL;
     }
 

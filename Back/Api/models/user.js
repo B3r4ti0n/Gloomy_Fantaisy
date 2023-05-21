@@ -21,7 +21,7 @@ const User = new Schema({
         trim: true,
     },
     ID_Stats:{
-        type: Number,
+        type: String,
         trim: true,
     }
 }, {
