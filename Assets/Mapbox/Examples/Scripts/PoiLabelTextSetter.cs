@@ -10,16 +10,17 @@ namespace Mapbox.Examples
     public class PoiLabelTextSetter : MonoBehaviour, IFeaturePropertySettable
     {
         [SerializeField]
-        Text _text;
+        Text _text; // Reference to the Text component for displaying the label
         [SerializeField]
-        Image _background;
+        Image _background; // Reference to the Image component for the background
 
-        private Dictionary<string, string> poiData;
+        private Dictionary<string, string> poiData; // Stores the data associated with the point of interest
 
         public void Set(Dictionary<string, object> props)
         {
-            _text.text = "";
+            _text.text = ""; // Clear the label text
 
+            // Check if the properties dictionary contains certain keys and set the label text accordingly
             if (props.ContainsKey("name"))
             {
                 _text.text = props["name"].ToString();
@@ -33,48 +34,48 @@ namespace Mapbox.Examples
                 _text.text = props["type"].ToString();
             }
 
+            // Convert the properties to a dictionary of string-string pairs
             poiData = new Dictionary<string, string>();
             foreach (var prop in props)
             {
                 poiData[prop.Key] = prop.Value.ToString();
             }
 
-            RefreshBackground();
+            RefreshBackground(); // Refresh the background layout
         }
 
         public void RefreshBackground()
         {
             RectTransform backgroundRect = _background.GetComponent<RectTransform>();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(backgroundRect);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(backgroundRect); // Force the immediate rebuild of the layout for the background
         }
 
         void OnMouseDown()
         {
-            Debug.Log("Clic détecté !");
+            Debug.Log("Click detected!");
             ClickTest();
         }
 
         void ClickTest()
         {
-            Debug.Log(_text.text);
-            PopUpManager popupManager = FindObjectOfType<PopUpManager>();
+            Debug.Log(_text.text); // Log the label text
+            PopUpManager popupManager = FindObjectOfType<PopUpManager>(); // Find the PopUpManager component in the scene
             if (popupManager != null)
             {
-                if (!popupManager.IsPopupActive()) // Vérifier si une pop-up est déjà active
+                if (!popupManager.IsPopupActive()) // Check if a pop-up is already active
                 {
-                    Debug.Log("PopUpActivé");
-                    popupManager.ActivatePopup(poiData);
+                    Debug.Log("Pop-up activated");
+                    popupManager.ActivatePopup(poiData); // Activate the pop-up and pass the poiData
                 }
                 else
                 {
-                    Debug.Log("Une pop-up est déjà activée.");
+                    Debug.Log("A pop-up is already active.");
                 }
             }
             else
             {
-                Debug.LogWarning("Le gestionnaire de pop-up n'a pas été trouvé dans la scène.");
+                Debug.LogWarning("Pop-up manager not found in the scene.");
             }
         }
-
     }
 }

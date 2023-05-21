@@ -6,27 +6,27 @@ using UnityEngine.UI;
 public class FarmScript : MonoBehaviour
 {
     [SerializeField]
-    private Button farmButton;
-    public Text messageText;
+    private Button farmButton; // Reference to the farm button
+    public Text messageText; // Reference to the text component for displaying messages
 
     [SerializeField]
-    private GameObject popupObject;
-    public Text popUpText;
+    private GameObject popupObject; // Reference to the cooldown popup object 
+    public Text popUpText; // Reference to the text component in the cooldown popup
 
-    public List<string> messages = new List<string>();
-    public float messageDuration = 5f;
-    private float timer = 0f;
-    private int clickCount = 0;
-    private bool isCooldown = false;
-    private float cooldownTimer = 120f; // 2 minutes
+    public List<string> messages = new List<string>(); // List to store messages
+    public float messageDuration = 5f; // Duration for displaying each message
+    private float timer = 0f; // Timer for message display
+    private int clickCount = 0; // Number of button clicks
+    private bool isCooldown = false; // Flag to indicate cooldown state
+    private float cooldownTimer = 120f; // Cooldown duration in seconds (2 minutes)
 
-    // Messages possibles
-    private string[] possibleMessages = { "Experiences", "GloomGold", "Object" };
+    // Possible messages
+    private string[] possibleMessages = { "Exp", "GloomGold", "Object" };
 
     // Start is called before the first frame update
     void Start()
     {
-        farmButton.onClick.AddListener(OnClickFarmButton);
+        farmButton.onClick.AddListener(OnClickFarmButton); // Register the OnClickFarmButton method as the button click listener
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class FarmScript : MonoBehaviour
     {
         if (isCooldown)
         {
-            cooldownTimer -= Time.deltaTime;
+            cooldownTimer -= Time.deltaTime; // Decrease the cooldown timer
 
             if (cooldownTimer <= 0f)
             {
@@ -49,21 +49,21 @@ public class FarmScript : MonoBehaviour
         }
         else if (messages.Count > 0)
         {
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime; // Decrease the message display timer
 
             if (timer <= 0)
             {
-                messages.RemoveAt(0);
+                messages.RemoveAt(0); // Remove the oldest message
                 timer = messageDuration;
             }
 
-            messageText.text = string.Join("\n", messages.ToArray());
+            messageText.text = string.Join("\n", messages.ToArray()); // Update the message text
         }
     }
 
     void OnClickFarmButton()
     {
-        if (isCooldown)
+        if (isCooldown) //If Coodown open cooldown popup
         {
             popupObject.SetActive(true);
             UpdateCooldownPopupText();
@@ -76,49 +76,49 @@ public class FarmScript : MonoBehaviour
         {
             if (clickCount == 1)
             {
-                int experienceValue = Random.Range(10, 51);
+                int experienceValue = Random.Range(10, 51); // Generate a random value for experiences
                 messages.Add("Experiences: " + experienceValue);
             }
             else if (clickCount == 2)
             {
-                int gloomGoldValue = Random.Range(10, 51);
+                int gloomGoldValue = Random.Range(10, 51); // Generate a random value for GloomGold
                 messages.Add("GloomGold: " + gloomGoldValue);
             }
             else if (clickCount == 3)
             {
-                int randomIndex = Random.Range(0, 2);
+                int randomIndex = Random.Range(0, 2); // Generate a random index to select a potion name
                 string potionName = (randomIndex == 0) ? "potion 1" : "potion 2";
                 messages.Add("Object: " + potionName);
             }
 
-            timer = messageDuration;
+            timer = messageDuration; // Reset the timer for displaying messages
         }
         else
         {
             isCooldown = true;
             popupObject.SetActive(true);
             UpdateCooldownPopupText();
-            StartCoroutine(ClearMessagesAfterDelay(2f));
+            StartCoroutine(ClearMessagesAfterDelay(2f)); // Start a coroutine to clear the messages after a delay
         }
     }
 
     IEnumerator ClearMessagesAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        ClearMessages();
+        ClearMessages(); // Clear all messages
     }
 
     void ClearMessages()
     {
-        messages.Clear();
-        messageText.text = "";
+        messages.Clear(); // Clear the list of messages
+        messageText.text = ""; // Clear the message text
     }
 
     void UpdateCooldownPopupText()
     {
         if (popupObject.activeSelf)
         {
-            popUpText.text = "Vous avez déjà tout récupéré. Temps restant : " + Mathf.Ceil(cooldownTimer) + " secondes";
+            popUpText.text = "You have already recovered everything. Remaining time :" + Mathf.Ceil(cooldownTimer) + " seconds"; // Update the cooldown popup text
         }
     }
 }
