@@ -30,4 +30,15 @@ public class PopUpManager : MonoBehaviour
         GameObject activePopup = activePopups[poiName];
         activePopup.SetActive(true);
     }
+    public bool IsPopupActive()
+    {
+        foreach (var kvp in activePopups)
+        {
+            if (kvp.Value.activeSelf)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

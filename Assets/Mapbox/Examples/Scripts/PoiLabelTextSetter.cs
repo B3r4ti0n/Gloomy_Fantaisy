@@ -60,13 +60,21 @@ namespace Mapbox.Examples
             PopUpManager popupManager = FindObjectOfType<PopUpManager>();
             if (popupManager != null)
             {
-                Debug.Log("PopUpActivé");
-                popupManager.ActivatePopup(poiData);
+                if (!popupManager.IsPopupActive()) // Vérifier si une pop-up est déjà active
+                {
+                    Debug.Log("PopUpActivé");
+                    popupManager.ActivatePopup(poiData);
+                }
+                else
+                {
+                    Debug.Log("Une pop-up est déjà activée.");
+                }
             }
             else
             {
                 Debug.LogWarning("Le gestionnaire de pop-up n'a pas été trouvé dans la scène.");
             }
         }
+
     }
 }
