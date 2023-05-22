@@ -11,12 +11,12 @@ using UnityEngine.SceneManagement;
 
 public class MongoDBScript : MonoBehaviour
 {
-    [SerializeField] private string url_test;
     private string responseText;
 
-    public IEnumerator GetRequest(string paramsURL, System.Func<string,bool> GetResult){
+    public IEnumerator GetRequest(string url_test, string paramsURL, System.Func<string,bool> GetResult){
+        Debug.Log(url_test);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
-
+        
         // Create a Put request with url target
         UnityWebRequest request = UnityWebRequest.Put(url_test, "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
@@ -45,6 +45,24 @@ public class MongoDBScript : MonoBehaviour
         }
     }
 
+    public IEnumerator GetRequestPatch(string url_test, string paramsURL, System.Func<bool> GetResult){
+        UnityWebRequest request = new UnityWebRequest(url_test, "PATCH");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success){
+            Debug.Log("PATCH request successful!");
+            GetResult();
+        }else{
+            Debug.Log("Error: " + request.error);
+        }
+
+    }
+
     public string CreateUrlBodyRequest(List<string> url_params_key_test, List<string> url_params_value){
 
         string paramsURL = "{";
@@ -59,7 +77,6 @@ public class MongoDBScript : MonoBehaviour
             }
         }
         paramsURL+="}";
-        Debug.Log(paramsURL);
         return paramsURL;
     }
 

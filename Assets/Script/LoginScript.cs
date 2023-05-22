@@ -28,29 +28,24 @@ public class LoginScript : MonoBehaviour
     // Return: void
     public void OnLoginClick(){
 
-        string username = usernameInputField.text;
+        string name = usernameInputField.text;
         string password = passwordInputField.text;
-        string email    = "arcoucou77@gmail.com";
-        string ID_Stats = "64527af131a271b2201ff0af";
         List<string> url_params_value = new List<string>();
         MongoDBScript mongoDBScript = new MongoDBScript();
         
 
-        if (username != "" && password != ""){
+        if (name != "" && password != ""){
 
-            url_params_value.Add(username);
-            url_params_value.Add(email);
+            url_params_value.Add(name);
             url_params_value.Add(password);
-            url_params_value.Add(ID_Stats);
 
             if (url_params_value == null){
                 url_params_value = url_params_value_test;
             }
 
             string testResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_test,url_params_value);
-            Debug.Log(testResult);
 
-            StartCoroutine(mongoDBScript.GetRequest(testResult,(result)=>{
+            StartCoroutine(mongoDBScript.GetRequest(url_test,testResult,(result)=>{
                 // Convert responseText string in object
                 var responseJson = JsonUtility.FromJson<UserLogged>(result);
                 LoginScript.userLogged = responseJson;

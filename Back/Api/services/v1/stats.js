@@ -1,7 +1,7 @@
 const Stats = require('../../models/stats');
 
 exports.getById = async (req, res, next) => {
-    const { id } = req.params;
+    const { id } = req.body;
 
     try {
         let stats = await Stats.findById(id);
@@ -21,10 +21,11 @@ exports.add = async (req, res, next) => {
 
     ({ 
         race : temp.race,
+        level : temp.level,
         exp : temp.exp,
         gold : temp.gold,
         gold_premium : temp.gold_premium,
-        healt_point : temp.healt_point,
+        health_point : temp.health_point,
         offensive_value : temp.offensive_value,
         defensive_value : temp.defensive_value,
         intelligence_value : temp.intelligence_value,
@@ -49,10 +50,11 @@ exports.update = async (req, res, next) => {
     ({ 
         id : temp.id,
         race : temp.race,
+        level : temp.level,
         exp : temp.exp,
         gold : temp.gold,
         gold_premium : temp.gold_premium,
-        healt_point : temp.healt_point,
+        health_point : temp.health_point,
         offensive_value : temp.offensive_value,
         defensive_value : temp.defensive_value,
         intelligence_value : temp.intelligence_value,

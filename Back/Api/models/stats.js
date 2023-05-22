@@ -7,6 +7,10 @@ const Stats = new Schema({
         trim    : true,
         required: [true, 'Race must be require']
     },
+    level: {
+        type    : Number,
+        trim    : true,
+    },
     exp: {
         type    : Number,
         trim    : true,
@@ -19,7 +23,7 @@ const Stats = new Schema({
         type    : Number,
         trim    : true,
     },
-    healt_point: {
+    health_point: {
         type    : Number,
         trim    : true,
     },
@@ -49,25 +53,29 @@ const Stats = new Schema({
 
 // execute hook below the document's save
 Stats.pre('save', function(next) {
-    const categories = ['healt_point', 'offensive_value', 'defensive_value', 'intelligence_value', 'speed_value', 'mana_value'];
+    //console.log(this);
+    this.level = 1;
+    const categories = ['health_point', 'offensive_value', 'defensive_value', 'intelligence_value', 'speed_value', 'mana_value'];
     let points = 600;
     const result = {};
     const limits = race_choise(this.race);
     
-    for (let i = 0; i < categories.length; i++) {
+    console.log('up');
+    for(let i = 0; i < categories.length; i++) {
         const limit = limits[categories[i]];
         const randomPoints = Math.floor(Math.random() * (Math.min(points, limit.max) - limit.min + 1) + limit.min);
         result[categories[i]] = randomPoints;
         points -= randomPoints;
     }
+    console.log('down');
     
-    this.healt_point = result['healt_point'];
+    this.health_point = result['health_point'];
     this.offensive_value = result['offensive_value'];
     this.defensive_value = result['defensive_value'];
     this.intelligence_value = result['intelligence_value'];
     this.speed_value = result['speed_value'];
     this.mana_value = result['mana_value'];
-
+    
     next();
 });
 
@@ -75,9 +83,9 @@ module.exports = mongoose.model('Stats', Stats);
 
 function race_choise(race) {
     switch (race) {
-        case "Orc":
+        case 'Orc':
             return limits = {
-                'healt_point': { min: 100, max: 200 },
+                'health_point': { min: 100, max: 200 },
                 'offensive_value': { min: 50, max: 150 },
                 'defensive_value': { min: 10, max: 30 },
                 'intelligence_value': { min: 40, max: 80 },

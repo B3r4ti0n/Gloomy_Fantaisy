@@ -3,7 +3,7 @@ const router = express.Router();
 
 const service = require('../../services/v1/stats');
 
-router.get('/:id', service.getById);
+router.put('/id', service.getById);
 
 router.put('/add', service.add);
 

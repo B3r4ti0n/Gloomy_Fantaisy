@@ -1,4 +1,5 @@
 const User = require('../../models/user');
+const bcrypt   = require('bcryptjs');
 
 exports.getById = async (req, res, next) => {
     const { id } = req.params;
@@ -14,6 +15,37 @@ exports.getById = async (req, res, next) => {
     } catch (error) {
         return res.status(501).json(error);
     }
+}
+
+exports.getByNameWithPassword = async (req, res, next) => {
+    const temp = {};
+
+    ({ 
+        name     : temp.name,
+        password : temp.password,
+    } = req.body);
+
+    try{
+        let user = await User.findOne({ name : temp.name});
+
+        if (user) {
+            bcrypt.compare(temp.password, user.password, (err, result) => {
+                if (err) {
+                  return err;
+                }
+              
+                if (result) {
+                    return res.status(201).json(user);
+                } else {
+                    return res.status(404).json('Invalide password');
+                }
+            });
+        }
+    }catch(error){
+        return res.status(501).json(error);
+    }
+
+    
 }
 
 exports.add = async (req, res, next) => {
@@ -43,7 +75,6 @@ exports.update = async (req, res, next) => {
     ({ 
         name     : temp.name,
         email    : temp.email,
-        password : temp.password,
         ID_Stats : temp.ID_Stats
     } = req.body);
 

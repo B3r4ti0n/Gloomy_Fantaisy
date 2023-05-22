@@ -16,6 +16,9 @@ public class CreateStatScript : MonoBehaviour
     [SerializeField] private string url_test;
     [SerializeField] private List<string> url_params_key_test;
     [SerializeField] private List<string> url_params_value_test;
+    [SerializeField] private string url_update;
+    [SerializeField] private List<string> url_params_key_update;
+    [SerializeField] private List<string> url_params_value_update;
     [SerializeField] private string responseText = "";
 
     public static UserLogged userLogged = new UserLogged();
@@ -28,98 +31,53 @@ public class CreateStatScript : MonoBehaviour
     // Update is called once per frame
     void CreateStats()
     {
-        if (LoginScript.userLogged.id != 0)
+        if (LoginScript.userLogged._id != null)
         {
             userLogged = LoginScript.userLogged;
         }else
         {
             userLogged = RegisterScript.userLogged;
         }
-        //Base stats on create account
-        string id = ""+userLogged.id;
-        string Race = nameRace.text;
-        string ID_Level = "1";
-        string Exp = "0";
-        string Gold = "0";
-        string Premium_gold = "0";
-        string Health_Point = "100";
-        string Offensive_value = "10";
-        string Defensive_value = "10";
-        string Intelligence_value = "10";
-        string Speed_value = "10";
-        string Mana_value = "100";
+
+        MongoDBScript mongoDBScript = new MongoDBScript();
+
+        string race = nameRace.text;
+        string exp = "0";
+        string gold = "0";
+        string premium_gold = "0";
 
         //Params Url
         List<string> url_params_value = new List<string>();
         
-        url_params_value.Add(id);
-        url_params_value.Add(Race);
-        url_params_value.Add(ID_Level);
-        url_params_value.Add(Exp);
-        url_params_value.Add(Gold);
-        url_params_value.Add(Premium_gold);
-        url_params_value.Add(Health_Point);
-        url_params_value.Add(Offensive_value);
-        url_params_value.Add(Defensive_value);
-        url_params_value.Add(Intelligence_value);
-        url_params_value.Add(Speed_value);
-        url_params_value.Add(Mana_value);
-
-        if (url_params_value == null){
-            url_params_value = url_params_value_test;
-        }
-
-        // Create string with params Url
-        string paramsURL = "{";
-        if(url_params_key_test.Count == url_params_value.Count) {
-            for(int nKey = 0; nKey <= url_params_key_test.Count-1; nKey++) {
-                if (nKey < url_params_key_test.Count-1){
-                    paramsURL+="\""+url_params_key_test[nKey]+"\":\""+url_params_value[nKey]+"\",";
-                }else{
-                    paramsURL+="\""+url_params_key_test[nKey]+"\":\""+url_params_value[nKey]+"\"";
-                }
-            }
-        }
-        paramsURL+="}";
-        // Start function GetRequest to async method
-        StartCoroutine(GetRequest(paramsURL));
-    
-    }
-
-    IEnumerator GetRequest(string paramsURL){
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
-
-        // Create a Put request with url target
-        UnityWebRequest request = UnityWebRequest.Put(url_test, "application/json");
-        request.SetRequestHeader("Content-Type", "application/json");
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-
-        // Create a download handler to recover result request
-        DownloadHandler downloadHandler = new DownloadHandlerBuffer();
-        request.downloadHandler = downloadHandler;
+        url_params_value.Add(race);
+        url_params_value.Add(exp);
+        url_params_value.Add(gold);
+        url_params_value.Add(premium_gold);
         
-        // Send request
-        yield return request.SendWebRequest();
- 
-        // Check if request result done or error
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            Debug.Log(request.error);
-        }
-        else
-        {
-            // Convert DownloadHandler type in string UTF8
-            responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
-
-            // Convert responseText string in object
-            var responseJson = JsonUtility.FromJson<UserLogged>(responseText);
-            CreateStatScript.userLogged = responseJson;
-            Debug.Log(CreateStatScript.userLogged.stats.Gold);
-            Debug.Log(CreateStatScript.userLogged.stats.Race);
             
+        string testResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_test,url_params_value);
+
+        // Start function GetRequest to async method
+        StartCoroutine(mongoDBScript.GetRequest(url_test,testResult,(result)=>{
+            // Convert responseText string in object
+            var responseJson = JsonUtility.FromJson<Stats>(result);
+            CreateStatScript.userLogged.stats = responseJson;
+            
+            Debug.Log(result);
+            if(CreateStatScript.userLogged.ID_Stats == "") {
+                CreateStatScript.userLogged.ID_Stats = CreateStatScript.userLogged.stats._id;
+                url_params_value_update.Add(CreateStatScript.userLogged.name);
+                url_params_value_update.Add(CreateStatScript.userLogged.email);
+                url_params_value_update.Add(CreateStatScript.userLogged.ID_Stats);
+                string updateResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_update,url_params_value_update);
+                StartCoroutine(mongoDBScript.GetRequestPatch(url_update,updateResult,()=>{
+                    return false;
+                }));
+            }
             SceneManager.LoadScene("MapScene");
 
-            yield return responseText;
-        }
+            return false;
+        }));
+    
     }
 }

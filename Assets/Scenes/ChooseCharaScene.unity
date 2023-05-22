@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414726, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731689, g: 0.13414702, b: 0.1210784, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -518,21 +518,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   validButton: {fileID: 177429577}
   nameRace: {fileID: 31207879}
-  url_test: http://localhost:8080/api/accounts/stats
+  url_test: http://83.199.134.203:3000/v1/stats/add
   url_params_key_test:
-  - id
-  - Race
-  - ID_Level
-  - Exp
-  - Gold
-  - Premium_gold
-  - Health_Point
-  - Offensive_value
-  - Defensive_value
-  - Intelligence_value
-  - Speed_value
-  - Mana_value
+  - race
+  - exp
+  - gold
+  - premium_gold
   url_params_value_test: []
+  url_update: http://83.199.134.203:3000/v1/users/update
+  url_params_key_update:
+  - name
+  - email
+  - ID_Stats
+  url_params_value_update: []
   responseText: 
 --- !u!1 &267633987
 GameObject:
