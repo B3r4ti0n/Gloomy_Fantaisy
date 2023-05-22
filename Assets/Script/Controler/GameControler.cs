@@ -20,6 +20,7 @@ public class GameControler : MonoBehaviour
     private MonsterControler monsterControler;
     private bool playerTurn;
     private bool playerRun;
+    private bool monsterTurn;
     private bool playerIsAlive;
     [SerializeField]
     private Slider playerHealthBar;
@@ -31,26 +32,31 @@ public class GameControler : MonoBehaviour
     {
         playerIsAlive = true;
         playerRun = false;
+        monsterTurn = false;
         playerControler = player.GetComponent<PlayerControler>();
         monsterControler = monster.GetComponent<MonsterControler>();
         if (playerControler.GetSpeed() > monsterControler.GetSpeed())
         {
             playerTurn = true;
+            monsterTurn = false;
         }
         else if (playerControler.GetSpeed() == monsterControler.GetSpeed())
         {
             if (Random.Range(0, 1) == 0)
             {
                 playerTurn = true;
+                monsterTurn = false;
             }
             else
             {
                 playerTurn = false;
+                monsterTurn = true;
             }
         }
         else if (playerControler.GetSpeed() < monsterControler.GetSpeed())
         {
             playerTurn = false;
+            monsterTurn = true;
         }
         playerHealthBar.maxValue = playerControler.GetMaxHealth();
         playerHealthBar.value = playerControler.GetHealth();
@@ -72,10 +78,10 @@ public class GameControler : MonoBehaviour
         else
         {
             //Let's monster attack while it's not player turn
-            if (!playerTurn)
+            if (!playerTurn && monsterTurn)
             {
                 StartCoroutine(MakeMonsterAttack());
-                playerTurn = !playerTurn;
+                monsterTurn = !monsterTurn;
             }
         }
         if (playerControler.GetHealth() <= 0)
@@ -98,9 +104,9 @@ public class GameControler : MonoBehaviour
     IEnumerator MakePlayerAttack()
     {
         string monsterWeekness = monsterControler.GetElementalWeekness();
-        Weapon playerWeapon = playerControler.GetWeapon();
-        if (playerTurn)
+        if (playerTurn && !monsterTurn)
         {
+            Weapon playerWeapon = playerControler.GetWeapon();
             //Check if player use an elemental weakness of the monster
             if (monsterWeekness == playerWeapon.element)
             {
@@ -112,8 +118,9 @@ public class GameControler : MonoBehaviour
             }
             //Update life bar of monster
             monsterHealthBar.value = monsterControler.GetHealth();
-            yield return new WaitForSeconds(1);
             playerTurn = !playerTurn;
+            yield return new WaitForSeconds(1);
+            monsterTurn = !monsterTurn;
         }
     }
     // Logic of monster attack
@@ -125,6 +132,8 @@ public class GameControler : MonoBehaviour
         playerControler.TakeDamage(monsterControler.GetDamage());
         //Update player life bar
         playerHealthBar.value = playerControler.GetHealth();
+        yield return new WaitForSeconds(0.5f);
+        playerTurn = !playerTurn;
     }
     //Launch animation dying for monster
     IEnumerator MakeMonsterDie()
@@ -162,7 +171,7 @@ public class GameControler : MonoBehaviour
     public void MakeRunAwayPlayer()
     {
         playerRun = true;
-        FinishBattle();
+        StartCoroutine(FinishBattle());
     }
 
 }

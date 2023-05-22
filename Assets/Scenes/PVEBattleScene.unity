@@ -1241,7 +1241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400122, guid: 317a56890b5c8e74ab1d492a2c7fb608, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4630673
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 400122, guid: 317a56890b5c8e74ab1d492a2c7fb608, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1249,7 +1249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400122, guid: 317a56890b5c8e74ab1d492a2c7fb608, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.76
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400122, guid: 317a56890b5c8e74ab1d492a2c7fb608, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1469,7 +1469,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2112150507}
         m_TargetAssemblyTypeName: GameControler, Assembly-CSharp
-        m_MethodName: setRunAwaitPlayer
+        m_MethodName: MakeRunAwayPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1851,8 +1851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f1c4cc5672b4cb5952554e3133c915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDamage: 25
-  MinDamage: 20
+  maxDamage: 1
+  MinDamage: 3
   durability: 100
   element: holy
 --- !u!114 &1330992103
@@ -2949,7 +2949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   health: 0
-  damage: 45
+  damage: 1
   weakness: fire
   speed: 0
 --- !u!1 &2112150505
