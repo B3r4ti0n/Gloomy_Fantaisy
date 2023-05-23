@@ -15,6 +15,9 @@ public class StatsMapController : MonoBehaviour
     [SerializeField] private Texture orcTexture;
     [SerializeField] private Texture elfTexture;
     [SerializeField] private Texture undeadTexture;
+    [SerializeField] private GameObject orcObject;
+    [SerializeField] private GameObject elfObject;
+    [SerializeField] private GameObject undeadObject;
     [SerializeField] private string url_test;
     [SerializeField] private List<string> url_params_key_test;
     [SerializeField] private List<string> url_params_value_test;
@@ -52,12 +55,18 @@ public class StatsMapController : MonoBehaviour
             if (userLogged.stats.race == "Orc")
             {
                 avatarImg.texture = orcTexture;
+                orcObject.SetActive(true);
             }else if (userLogged.stats.race == "Elf")
             {
                 avatarImg.texture = elfTexture;
-            }else
+                elfObject.SetActive(true);
+            }else if (userLogged.stats.race == "Undead")
             {
                 avatarImg.texture = undeadTexture;
+                undeadObject.SetActive(true);
+            }else
+            {
+                Debug.Log("no race");
             }
             //userLogged.stats.Race
             // avatarText.text = testImg;
