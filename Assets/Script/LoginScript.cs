@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Networking;
@@ -17,6 +18,7 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private List<string> url_params_key_test;
     [SerializeField] private List<string> url_params_value_test;
     [SerializeField] private string responseText = "";
+    [SerializeField] private Text ErrorAlert;
 
     //New user Logged
     public static UserLogged userLogged = new UserLogged();
@@ -47,25 +49,30 @@ public class LoginScript : MonoBehaviour
 
             StartCoroutine(mongoDBScript.GetRequest(url_test,testResult,(result)=>{
                 // Convert responseText string in object
-                var responseJson = JsonUtility.FromJson<UserLogged>(result);
-                LoginScript.userLogged = responseJson;
-                
-                //If user have a race scene Map
-                if (userLogged.ID_Stats != "")
-                {
-                    SceneManager.LoadScene("MapScene");
-                    return true;
-                }else{
-                    SceneManager.LoadScene("ChooseCharaScene");
-                    return false;
+                try{
+                    var responseJson = JsonUtility.FromJson<UserLogged>(result);
+                    LoginScript.userLogged = responseJson;
+                    
+                    //If user have a race scene Map
+                    if (userLogged.ID_Stats != "")
+                    {
+                        SceneManager.LoadScene("MapScene");
+                        return true;
+                    }else{
+                        SceneManager.LoadScene("ChooseCharaScene");
+                        return false;
+                    }
+                }catch(System.Exception ex){
+                    ErrorAlert.text = "Mot de passe ou pseudo invalide";
                 }
+                return false;
             }));
 
             
 
         }else{
             // Else not password or pseudo given in input
-            Debug.Log("Mot de passe ou pseudo incorrect");
+            ErrorAlert.text = "Mot de passe ou pseudo vide";
         }
     }
 }

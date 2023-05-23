@@ -54,27 +54,30 @@ const Stats = new Schema({
 // execute hook below the document's save
 Stats.pre('save', function(next) {
     //console.log(this);
-    this.level = 1;
-    const categories = ['health_point', 'offensive_value', 'defensive_value', 'intelligence_value', 'speed_value', 'mana_value'];
-    let points = 600;
-    const result = {};
-    const limits = race_choise(this.race);
-    
-    console.log('up');
-    for(let i = 0; i < categories.length; i++) {
-        const limit = limits[categories[i]];
-        const randomPoints = Math.floor(Math.random() * (Math.min(points, limit.max) - limit.min + 1) + limit.min);
-        result[categories[i]] = randomPoints;
-        points -= randomPoints;
+    if (this.health_point == "") {
+        this.level = 1;
+        const categories = ['health_point', 'offensive_value', 'defensive_value', 'intelligence_value', 'speed_value', 'mana_value'];
+        let points = 600;
+        const result = {};
+        const limits = race_choise(this.race);
+        
+        console.log('up');
+        for(let i = 0; i < categories.length; i++) {
+            const limit = limits[categories[i]];
+            const randomPoints = Math.floor(Math.random() * (Math.min(points, limit.max) - limit.min + 1) + limit.min);
+            result[categories[i]] = randomPoints;
+            points -= randomPoints;
+        }
+        console.log('down');
+        
+        this.health_point = result['health_point'];
+        this.offensive_value = result['offensive_value'];
+        this.defensive_value = result['defensive_value'];
+        this.intelligence_value = result['intelligence_value'];
+        this.speed_value = result['speed_value'];
+        this.mana_value = result['mana_value'];
     }
-    console.log('down');
     
-    this.health_point = result['health_point'];
-    this.offensive_value = result['offensive_value'];
-    this.defensive_value = result['defensive_value'];
-    this.intelligence_value = result['intelligence_value'];
-    this.speed_value = result['speed_value'];
-    this.mana_value = result['mana_value'];
     
     next();
 });
@@ -92,7 +95,15 @@ function race_choise(race) {
                 'speed_value': { min: 80, max: 120 },
                 'mana_value': { min: 70, max: 130 },
             };
-    
+        case 'Elf':
+            return limits = {
+                'health_point': { min: 50, max: 100 },
+                'offensive_value': { min: 50, max: 100 },
+                'defensive_value': { min: 50, max: 100 },
+                'intelligence_value': { min: 100, max: 150 },
+                'speed_value': { min: 100, max: 150 },
+                'mana_value': { min: 100, max: 150 },
+            };
         default:
             break;
     }

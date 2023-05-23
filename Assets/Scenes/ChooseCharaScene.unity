@@ -518,14 +518,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   validButton: {fileID: 177429577}
   nameRace: {fileID: 31207879}
-  url_test: http://83.199.134.203:3000/v1/stats/add
+  url_test: http://localhost:3000/v1/stats/add
   url_params_key_test:
   - race
   - exp
   - gold
   - premium_gold
   url_params_value_test: []
-  url_update: http://83.199.134.203:3000/v1/users/update
+  url_update: http://localhost:3000/v1/users/update
   url_params_key_update:
   - name
   - email

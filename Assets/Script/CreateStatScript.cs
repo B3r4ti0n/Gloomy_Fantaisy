@@ -63,7 +63,6 @@ public class CreateStatScript : MonoBehaviour
             var responseJson = JsonUtility.FromJson<Stats>(result);
             CreateStatScript.userLogged.stats = responseJson;
             
-            Debug.Log(result);
             if(CreateStatScript.userLogged.ID_Stats == "") {
                 CreateStatScript.userLogged.ID_Stats = CreateStatScript.userLogged.stats._id;
                 url_params_value_update.Add(CreateStatScript.userLogged.name);

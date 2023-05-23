@@ -14,7 +14,6 @@ public class MongoDBScript : MonoBehaviour
     private string responseText;
 
     public IEnumerator GetRequest(string url_test, string paramsURL, System.Func<string,bool> GetResult){
-        Debug.Log(url_test);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
         
         // Create a Put request with url target
@@ -32,7 +31,9 @@ public class MongoDBScript : MonoBehaviour
         // Check if request result done or error
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.Log(request.error);
+            GetResult(request.error.ToString());
+
+            yield return request.error.ToString();
         }
         else
         {

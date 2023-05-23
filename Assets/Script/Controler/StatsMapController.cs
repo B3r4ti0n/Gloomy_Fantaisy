@@ -41,7 +41,6 @@ public class StatsMapController : MonoBehaviour
             var responseJson = JsonUtility.FromJson<Stats>(result);
             userLogged.stats = responseJson;
 
-            Debug.Log(userLogged.stats._id);
             //Change the text by the UserLogged data in LoginScript
             nameText.text = userLogged.name;
             lvlText.text = userLogged.stats.level.ToString();

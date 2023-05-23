@@ -27,7 +27,7 @@ exports.getByNameWithPassword = async (req, res, next) => {
 
     try{
         let user = await User.findOne({ name : temp.name});
-
+        
         if (user) {
             bcrypt.compare(temp.password, user.password, (err, result) => {
                 if (err) {
@@ -40,6 +40,8 @@ exports.getByNameWithPassword = async (req, res, next) => {
                     return res.status(404).json('Invalide password');
                 }
             });
+        }else{
+            return res.status(404).json('Invalide user');
         }
     }catch(error){
         return res.status(501).json(error);
@@ -75,7 +77,7 @@ exports.update = async (req, res, next) => {
     ({ 
         name     : temp.name,
         email    : temp.email,
-        ID_Stats : temp.ID_Stats
+        ID_Stats : temp.ID_Stats,
     } = req.body);
 
     try {
