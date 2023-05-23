@@ -6,22 +6,22 @@ using UnityEngine.UI;
 public class FarmScript : MonoBehaviour
 {
     [SerializeField]
-    private Button farmButton; // Reference to the farm button
+    public Button farmButton; // Reference to the farm button
     public Text messageText; // Reference to the text component for displaying messages
 
     [SerializeField]
-    private GameObject popupObject; // Reference to the cooldown popup object 
+    public GameObject popupObject; // Reference to the cooldown popup object 
     public Text popUpText; // Reference to the text component in the cooldown popup
 
     public List<string> messages = new List<string>(); // List to store messages
     public float messageDuration = 5f; // Duration for displaying each message
-    private float timer = 0f; // Timer for message display
-    private int clickCount = 0; // Number of button clicks
-    private bool isCooldown = false; // Flag to indicate cooldown state
-    private float cooldownTimer = 120f; // Cooldown duration in seconds (2 minutes)
+    public float timer = 0f; // Timer for message display
+    public int clickCount = 0; // Number of button clicks
+    public bool isCooldown = false; // Flag to indicate cooldown state
+    public float cooldownTimer = 120f; // Cooldown duration in seconds (2 minutes)
 
     // Possible messages
-    private string[] possibleMessages = { "Exp", "GloomGold", "Object" };
+    public string[] possibleMessages = { "Exp", "GloomGold", "Object" };
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +61,7 @@ public class FarmScript : MonoBehaviour
         }
     }
 
-    void OnClickFarmButton()
+    public void OnClickFarmButton()
     {
         if (isCooldown) //If Coodown open cooldown popup
         {
@@ -99,6 +99,7 @@ public class FarmScript : MonoBehaviour
             popupObject.SetActive(true);
             UpdateCooldownPopupText();
             StartCoroutine(ClearMessagesAfterDelay(2f)); // Start a coroutine to clear the messages after a delay
+            clickCount = 0;
         }
     }
 
