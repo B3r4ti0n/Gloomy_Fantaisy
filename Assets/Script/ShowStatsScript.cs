@@ -27,7 +27,7 @@ public class ShowStatsScript : MonoBehaviour
     [SerializeField] private RawImage AtImg;
    
 
-    public UserLogged userLogged = new UserLogged();
+    public static UserLogged userLogged = new UserLogged();
 
     // Start is called before the first frame update
     void Start()
