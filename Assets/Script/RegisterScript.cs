@@ -3,46 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class RegisterScript : MonoBehaviour
 {
     //Adress Api
-    [SerializeField] private string authentificationEndpoint = "http://localhost:8080/api/accounts/register";
+    [SerializeField] private string url_test = "http://localhost:8080/api/accounts/register";
+
+    [SerializeField] private List<string> url_params_key_test;
+    [SerializeField] private List<string> url_params_value_test;
 
     [SerializeField] private TMP_InputField usernameInputField;
     [SerializeField] private TMP_InputField emailInputField;
     [SerializeField] private TMP_InputField passwordInputField;
+    [SerializeField] private string responseText = "";
+
+    public static UserLogged userLogged = new UserLogged();
 
     public void OnRegisterClick(){
-        StartCoroutine(TryLogin());
-    }
-    private IEnumerator TryLogin(){
-        string username = usernameInputField.text;
+
+        string name = usernameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
+        string ID_Stats = "";
+        MongoDBScript mongoDBScript = new MongoDBScript();
 
-        UnityWebRequest request = UnityWebRequest.Get($"{authentificationEndpoint}?username={username}&email{email}&password{password}");
-        var handler = request.SendWebRequest();
+        //Params Url
+        List<string> url_params_value = new List<string>();
+        
+        url_params_value.Add(name);
+        url_params_value.Add(email);
+        url_params_value.Add(password);
+        url_params_value.Add(ID_Stats);
+        
+        string testResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_test,url_params_value);
 
-        float startTime = 0.0f;
-        while(!handler.isDone){
-
-            startTime += Time.deltaTime;
-
-            if (startTime > 10.0f){
-                break;
-            }
-
-            yield return null;
-        }
-        if (request.result == UnityWebRequest.Result.Success){
-            Debug.Log(request.downloadHandler.text);
-        }else{
-            Debug.Log("Unable to connect...");
-        }
-
-        Debug.Log($"{username}:{email}:{password}");
-
-        yield return null;
+        StartCoroutine(mongoDBScript.GetRequest(url_test,testResult,(result)=>{
+            // Convert responseText string in object
+            var responseJson = JsonUtility.FromJson<UserLogged>(result);
+            LoginScript.userLogged = responseJson;
+            
+            SceneManager.LoadScene("ChooseCharaScene");
+            return false;
+        }));
+    
     }
 }

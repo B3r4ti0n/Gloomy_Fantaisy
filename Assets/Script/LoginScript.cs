@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Networking;
@@ -17,6 +18,7 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private List<string> url_params_key_test;
     [SerializeField] private List<string> url_params_value_test;
     [SerializeField] private string responseText = "";
+    [SerializeField] private Text ErrorAlert;
 
     //New user Logged
     public static UserLogged userLogged = new UserLogged();
@@ -28,84 +30,49 @@ public class LoginScript : MonoBehaviour
     // Return: void
     public void OnLoginClick(){
 
-        string username = usernameInputField.text;
+        string name = usernameInputField.text;
         string password = passwordInputField.text;
         List<string> url_params_value = new List<string>();
+        MongoDBScript mongoDBScript = new MongoDBScript();
         
 
-        if (username != "" && password != ""){
+        if (name != "" && password != ""){
 
-            url_params_value.Add(username);
+            url_params_value.Add(name);
             url_params_value.Add(password);
 
             if (url_params_value == null){
                 url_params_value = url_params_value_test;
             }
 
-            // Create string with params Url
-            string paramsURL = "{";
-            if(url_params_key_test.Count == url_params_value.Count) {
-                for(int nKey = 0; nKey <= url_params_key_test.Count-1; nKey++) {
-                    if (nKey < url_params_key_test.Count-1){
-                        paramsURL+="\""+url_params_key_test[nKey]+"\":\""+url_params_value[nKey]+"\",";
-                    }else{
-                        paramsURL+="\""+url_params_key_test[nKey]+"\":\""+url_params_value[nKey]+"\"";
-                    }
-                }
-            }
-            paramsURL+="}";
+            string testResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_test,url_params_value);
 
-            // Start function GetRequest to async method
-            StartCoroutine(GetRequest(paramsURL));
+            StartCoroutine(mongoDBScript.GetRequest(url_test,testResult,(result)=>{
+                // Convert responseText string in object
+                try{
+                    var responseJson = JsonUtility.FromJson<UserLogged>(result);
+                    LoginScript.userLogged = responseJson;
+                    
+                    //If user have a race scene Map
+                    if (userLogged.ID_Stats != "")
+                    {
+                        SceneManager.LoadScene("MapScene");
+                        return true;
+                    }else{
+                        SceneManager.LoadScene("ChooseCharaScene");
+                        return false;
+                    }
+                }catch(System.Exception ex){
+                    ErrorAlert.text = "Mot de passe ou pseudo invalide";
+                }
+                return false;
+            }));
+
+            
 
         }else{
             // Else not password or pseudo given in input
-            Debug.Log("Mot de passe ou pseudo incorrect");
-        }
-    }
-
-    // Function send Request to users table with api 
-    // Params:
-    //  - paramsURL: String
-    // Return: IEnumerator
-    IEnumerator GetRequest(string paramsURL){
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(paramsURL);
-
-        // Create a Put request with url target
-        UnityWebRequest request = UnityWebRequest.Put(url_test, "application/json");
-        request.SetRequestHeader("Content-Type", "application/json");
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-
-        // Create a download handler to recover result request
-        DownloadHandler downloadHandler = new DownloadHandlerBuffer();
-        request.downloadHandler = downloadHandler;
-        
-        // Send request
-        yield return request.SendWebRequest();
- 
-        // Check if request result done or error
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            Debug.Log(request.error);
-        }
-        else
-        {
-            // Convert DownloadHandler type in string UTF8
-            responseText = System.Text.Encoding.UTF8.GetString(downloadHandler.data);
-
-            // Convert responseText string in object
-            var responseJson = JsonUtility.FromJson<UserLogged>(responseText);
-            LoginScript.userLogged = responseJson;
-            
-            //If user have a race scene Map
-            if (userLogged.ID_Stats != "")
-            {
-                SceneManager.LoadScene("MapScene");
-            }else{
-                SceneManager.LoadScene("ChooseCharaScene");
-            }
-
-            yield return responseText;
+            ErrorAlert.text = "Mot de passe ou pseudo vide";
         }
     }
 }

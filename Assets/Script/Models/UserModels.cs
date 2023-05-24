@@ -3,7 +3,7 @@ using UnityEngine;
 
 [Serializable]
 public class UserLogged {
-    public int id;
+    public string _id;
     public string name;
     public string email;
     public string ID_Stats;
@@ -12,18 +12,19 @@ public class UserLogged {
 
 [Serializable]
 public class Stats {
-    public int id;
-    public int ID_Level;
-    public string Race;
-    public int Exp;
-    public int Gold;
-    public int Premium_gold;
-    public int Health_Point;
-    public int Offensive_value;
-    public int Defensive_value;
-    public int Intelligence_value;
-    public int Speed_value;
-    public int Mana_value;
+    public string _id;
+    public int level;
+    public string race;
+    public int exp;
+    public int gold;
+    public int gold_premium;
+    public int health_point;
+    public int offensive_value;
+    public int defensive_value;
+    public int intelligence_value;
+    public int speed_value;
+    public int mana_value;
+    public int level_point;
 }
 
 public class NewBehaviourScript : MonoBehaviour {

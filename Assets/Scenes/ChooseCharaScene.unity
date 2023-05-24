@@ -518,21 +518,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   validButton: {fileID: 177429577}
   nameRace: {fileID: 31207879}
-  url_test: http://localhost:8080/api/accounts/stats
+  url_test: http://10.160.33.51:3000/v1/stats/add
   url_params_key_test:
-  - id
-  - Race
-  - ID_Level
-  - Exp
-  - Gold
-  - Premium_gold
-  - Health_Point
-  - Offensive_value
-  - Defensive_value
-  - Intelligence_value
-  - Speed_value
-  - Mana_value
+  - race
+  - exp
+  - gold
+  - premium_gold
   url_params_value_test: []
+  url_update: http://localhost:3000/v1/users/update
+  url_params_key_update:
+  - name
+  - email
+  - ID_Stats
+  url_params_value_update: []
   responseText: 
 --- !u!1 &267633987
 GameObject:
