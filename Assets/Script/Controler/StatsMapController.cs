@@ -74,8 +74,15 @@ public class StatsMapController : MonoBehaviour
 
     }
     // Update is called once per frame
-    void Update()
+    public void ActivatePopUp()
     {
-        
+        PopUpManager popupManager = FindObjectOfType<PopUpManager>();
+        popupManager.OpenStatsPopup();
+    }
+
+    public void ClosePopUp()
+    {
+        PopUpManager popupManager = FindObjectOfType<PopUpManager>();
+        popupManager.CloseStatsPopup();
     }
 }
