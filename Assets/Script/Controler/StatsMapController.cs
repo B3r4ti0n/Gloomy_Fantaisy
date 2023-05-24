@@ -49,7 +49,7 @@ public class StatsMapController : MonoBehaviour
             lvlText.text = userLogged.stats.level.ToString();
             expText.text = userLogged.stats.exp.ToString();
             goldText.text = userLogged.stats.gold.ToString();
-            pgoldText.text = userLogged.stats.premium_gold.ToString();
+            pgoldText.text = userLogged.stats.gold_premium.ToString();
 
             if (userLogged.stats.race == "Orc")
             {

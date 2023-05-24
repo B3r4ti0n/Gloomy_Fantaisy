@@ -31,6 +31,7 @@ exports.add = async (req, res, next) => {
         intelligence_value : temp.intelligence_value,
         speed_value : temp.speed_value,
         mana_value : temp.mana_value,
+        level_point : temp.level_point,
     } = req.body);
 
     Object.keys(temp).forEach((key) => (temp[key] == null) && delete temp[key]);
@@ -60,6 +61,7 @@ exports.update = async (req, res, next) => {
         intelligence_value : temp.intelligence_value,
         speed_value : temp.speed_value,
         mana_value : temp.mana_value,
+        level_point : temp.level_point,
     } = req.body);
 
     Object.keys(temp).forEach((key) => (temp[key] == null) && delete temp[key]);

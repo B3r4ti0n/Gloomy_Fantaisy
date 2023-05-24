@@ -17,13 +17,14 @@ public class Stats {
     public string race;
     public int exp;
     public int gold;
-    public int premium_gold;
-    public int health_Point;
+    public int gold_premium;
+    public int health_point;
     public int offensive_value;
     public int defensive_value;
     public int intelligence_value;
     public int speed_value;
     public int mana_value;
+    public int level_point;
 }
 
 public class NewBehaviourScript : MonoBehaviour {

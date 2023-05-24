@@ -47,28 +47,30 @@ const Stats = new Schema({
         type    : Number,
         trim    : true,
     },
+    level_point:{
+        type    : Number,
+        trim    : true,
+    },
 }, {
     timestamps: true // add 2 attributs in documents createdAt and updatedAt
 });
 
 // execute hook below the document's save
 Stats.pre('save', function(next) {
-    //console.log(this);
-    if (this.health_point == "") {
+    console.log(this.health_point);
+    if (this.health_point == null) {
         this.level = 1;
         const categories = ['health_point', 'offensive_value', 'defensive_value', 'intelligence_value', 'speed_value', 'mana_value'];
         let points = 600;
         const result = {};
         const limits = race_choise(this.race);
         
-        console.log('up');
         for(let i = 0; i < categories.length; i++) {
             const limit = limits[categories[i]];
             const randomPoints = Math.floor(Math.random() * (Math.min(points, limit.max) - limit.min + 1) + limit.min);
             result[categories[i]] = randomPoints;
             points -= randomPoints;
         }
-        console.log('down');
         
         this.health_point = result['health_point'];
         this.offensive_value = result['offensive_value'];
@@ -76,6 +78,7 @@ Stats.pre('save', function(next) {
         this.intelligence_value = result['intelligence_value'];
         this.speed_value = result['speed_value'];
         this.mana_value = result['mana_value'];
+        this.level_point = 10;
     }
     
     
