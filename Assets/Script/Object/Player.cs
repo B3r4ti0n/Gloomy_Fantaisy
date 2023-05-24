@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     //Properties of Player
     [SerializeField]
     private int maxHealth;
-    
+    [SerializeField]
     private int health;
 
     //Use in futur

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MonsterControler : MonoBehaviour
 {
+    [SerializeField]
     private Monster monster;
     private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        monster = GetComponent<Monster>();
         animator = GetComponent<Animator>();
         animator.SetFloat("Action", 0);
     }

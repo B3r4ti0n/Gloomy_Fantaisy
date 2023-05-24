@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class PlayerControler : MonoBehaviour
 {
     private Animator animator;
+    [SerializeField]
     private Player player;
     private Weapon weapon;
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Player>();
         weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
         animator.SetFloat("Action", 0);

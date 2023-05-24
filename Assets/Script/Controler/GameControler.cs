@@ -7,16 +7,17 @@ using UnityEngine.UI;
 public class GameControler : MonoBehaviour
 {
     [SerializeField]
-    private GameObject player;
-
+    private GameObject FemaleAvatar;
+    [SerializeField]
+    private GameObject MaleAvatar;
     [SerializeField]
     private GameObject canvasResult;
     [SerializeField]
     private TMP_Text resultText;
-
     private PlayerControler playerControler;
     [SerializeField]
     private GameObject monster;
+    private GameObject player;
     private MonsterControler monsterControler;
     private bool playerTurn;
     private bool playerRun;
@@ -30,10 +31,11 @@ public class GameControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FemaleAvatar.SetActive(true);
+        playerControler = FemaleAvatar.GetComponent<PlayerControler>();
         playerIsAlive = true;
         playerRun = false;
         monsterTurn = false;
-        playerControler = player.GetComponent<PlayerControler>();
         monsterControler = monster.GetComponent<MonsterControler>();
         if (playerControler.GetSpeed() > monsterControler.GetSpeed())
         {
