@@ -26,7 +26,6 @@ public class FarmScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(StatsMapController.userLogged.name);
         farmButton.onClick.AddListener(OnClickFarmButton); // Register the OnClickFarmButton method as the button click listener
     }
 
@@ -79,11 +78,14 @@ public class FarmScript : MonoBehaviour
             {
                 int experienceValue = Random.Range(10, 51); // Generate a random value for experiences
                 messages.Add("Experiences: " + experienceValue);
+                StatsMapController.userLogged.stats.exp = StatsMapController.userLogged.stats.exp + experienceValue;
             }
             else if (clickCount == 2)
             {
                 int gloomGoldValue = Random.Range(10, 51); // Generate a random value for GloomGold
                 messages.Add("GloomGold: " + gloomGoldValue);
+                StatsMapController.userLogged.stats.gold = StatsMapController.userLogged.stats.gold + gloomGoldValue;
+                Debug.Log(StatsMapController.userLogged.stats.exp);
             }
             else if (clickCount == 3)
             {

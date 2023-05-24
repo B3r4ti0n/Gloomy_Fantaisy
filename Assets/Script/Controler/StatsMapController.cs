@@ -73,6 +73,13 @@ public class StatsMapController : MonoBehaviour
         }));
 
     }
+
+    public void Update()
+    {
+        goldText.text = userLogged.stats.gold.ToString();
+        expText.text = userLogged.stats.exp.ToString();
+        
+    }
     // Update is called once per frame
     public void ActivatePopUp()
     {
