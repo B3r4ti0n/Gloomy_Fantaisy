@@ -26,6 +26,7 @@ public class FarmScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(StatsMapController.userLogged.name);
         farmButton.onClick.AddListener(OnClickFarmButton); // Register the OnClickFarmButton method as the button click listener
     }
 
