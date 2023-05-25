@@ -307,6 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 114349136819514582}
   _background: {fileID: 114704683156925328}
+  prefabMap: {fileID: 1733686239018384}
 --- !u!222 &4311493330239668947
 CanvasRenderer:
   m_ObjectHideFlags: 0
