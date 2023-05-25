@@ -27,6 +27,13 @@ public class Stats {
     public int level_point;
 }
 
+[Serializable]
+public class LevelUp {
+    public int level;
+    public int level_point;
+    public int exp;
+}
+
 public class NewBehaviourScript : MonoBehaviour {
     // ...
 }
