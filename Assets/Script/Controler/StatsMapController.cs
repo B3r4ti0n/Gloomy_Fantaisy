@@ -25,7 +25,7 @@ public class StatsMapController : MonoBehaviour
     public static UserLogged userLogged = new UserLogged();
     // Start is called before the first frame update
     void Start(){
-        
+    
         if (LoginScript.userLogged._id != null){
             userLogged = LoginScript.userLogged;
         }else{

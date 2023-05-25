@@ -27,6 +27,10 @@ public class PlayerControler : MonoBehaviour
     public void SetPlayer(Player newPlayer){
         player = newPlayer;
     }
+
+    public void SetMaxhealth(int maxHealth){
+        player.SetMaxHealth(maxHealth);
+    }
     public Weapon GetWeapon(){
         animator.SetTrigger("Attack");
         return weapon;
@@ -48,6 +52,10 @@ public class PlayerControler : MonoBehaviour
 
     public int GetSpeed(){
         return player.GetSpeed();
+    }
+
+    public void SetSpeed(int speed){
+        player.SetSpeed(speed);
     }
 
     //Trigger animation of Dying
