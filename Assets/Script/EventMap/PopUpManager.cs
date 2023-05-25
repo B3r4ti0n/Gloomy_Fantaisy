@@ -7,6 +7,7 @@ public class PopUpManager : MonoBehaviour
 {
     public GameObject popupPrefab; // Reference to the prefab for the pop-up
     public GameObject statsView;
+    public GameObject lvlUpView;
     private Dictionary<string, GameObject> activePopups = new Dictionary<string, GameObject>(); // Dictionary to store references to active pop-ups, using POI names as keys
 
     public void ActivatePopup(Dictionary<string, string> poiData)
@@ -73,6 +74,40 @@ public class PopUpManager : MonoBehaviour
 
             // Remove the stats popup from the dictionary
             activePopups.Remove("StatsView");
+
+            // Destroy the stats popup
+            Destroy(statsPopup);
+        }
+    }
+
+    public void OpenLvlUpPopup()
+    {
+        // Check if the stats popup is already active
+        if (activePopups.ContainsKey("LvlUpView"))
+        {
+            Debug.Log("The stats popup is already open.");
+            return;
+        }
+
+        // Instantiate the stats popup as a child of the manager
+        GameObject popupInstance = Instantiate(lvlUpView, transform);
+        activePopups.Add("LvlUpView", popupInstance);
+
+        // Activate the stats popup
+        GameObject statsPopup = activePopups["LvlUpView"];
+        statsPopup.SetActive(true);
+    }
+
+    public void CloseLvlUpPopup()
+    {
+        // Check if the stats popup is active
+        if (activePopups.ContainsKey("LvlUpView"))
+        {
+            // Get the reference to the stats popup
+            GameObject statsPopup = activePopups["LvlUpView"];
+
+            // Remove the stats popup from the dictionary
+            activePopups.Remove("LvlUpView");
 
             // Destroy the stats popup
             Destroy(statsPopup);
