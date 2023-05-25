@@ -91,12 +91,12 @@ function race_choise(race) {
     switch (race) {
         case 'Orc':
             return limits = {
-                'health_point': { min: 100, max: 200 },
-                'offensive_value': { min: 50, max: 150 },
-                'defensive_value': { min: 10, max: 30 },
-                'intelligence_value': { min: 40, max: 80 },
-                'speed_value': { min: 80, max: 120 },
-                'mana_value': { min: 70, max: 130 },
+                'health_point': { min: 100, max: 150 },
+                'offensive_value': { min: 100, max: 150 },
+                'defensive_value': { min: 100, max: 150 },
+                'intelligence_value': { min: 50, max: 100 },
+                'speed_value': { min: 50, max: 100 },
+                'mana_value': { min: 50, max: 100 },
             };
         case 'Elf':
             return limits = {
