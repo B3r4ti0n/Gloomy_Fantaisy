@@ -3,6 +3,7 @@ var router = express.Router();
 
 const userRoute = require('./users');
 const statsRoute = require('./stats');
+const levelRoute = require('./levels')
 
 router.get('/', async (req, res) => {
     res.status(200).json({
@@ -15,5 +16,6 @@ router.get('/', async (req, res) => {
 
 router.use('/users', userRoute);
 router.use('/stats', statsRoute);
+router.use('/levels', levelRoute);
 
 module.exports = router;

@@ -25,9 +25,12 @@ public class ShowStatsScript : MonoBehaviour
     [SerializeField] private Button MvBtn;
     [SerializeField] private RawImage AvImg;
     [SerializeField] private RawImage AtImg;
+    [SerializeField] private string url_update;
+    [SerializeField] private List<string> url_params_key_update;
+    [SerializeField] private List<string> url_params_value_update;
    
 
-    public UserLogged userLogged = new UserLogged();
+    public static UserLogged userLogged = new UserLogged();
 
     // Start is called before the first frame update
     void Start()
@@ -104,4 +107,25 @@ public class ShowStatsScript : MonoBehaviour
         }
     }
 
+    public void OnCloseStatsPop(){
+        url_params_value_update.Add(userLogged.stats._id.ToString());
+        url_params_value_update.Add(userLogged.stats.level.ToString());
+        url_params_value_update.Add(userLogged.stats.exp.ToString());
+        url_params_value_update.Add(userLogged.stats.gold.ToString());
+        url_params_value_update.Add(userLogged.stats.gold_premium.ToString());
+        url_params_value_update.Add(userLogged.stats.health_point.ToString());
+        url_params_value_update.Add(userLogged.stats.offensive_value.ToString());
+        url_params_value_update.Add(userLogged.stats.defensive_value.ToString());
+        url_params_value_update.Add(userLogged.stats.intelligence_value.ToString());
+        url_params_value_update.Add(userLogged.stats.speed_value.ToString());
+        url_params_value_update.Add(userLogged.stats.mana_value.ToString());
+        url_params_value_update.Add(userLogged.stats.level_point.ToString());
+
+        MongoDBScript mongoDBScript = new MongoDBScript();
+        
+        string updateResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_update,url_params_value_update);
+        StartCoroutine(mongoDBScript.GetRequestPatch(url_update,updateResult,()=>{
+            return false;
+        }));
+    }
 }
