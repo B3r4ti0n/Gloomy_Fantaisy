@@ -67,9 +67,7 @@ exports.update = async (req, res, next) => {
     Object.keys(temp).forEach((key) => (temp[key] == null) && delete temp[key]);
 
     try {
-        console.log(temp);
         let stats = await Stats.findOne({ _id: temp.id });
-        console.log(stats);
         if (stats) {       
             Object.keys(temp).forEach((key) => {
                 if (!!temp[key]) {
