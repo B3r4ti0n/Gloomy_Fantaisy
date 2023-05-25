@@ -33,13 +33,9 @@ public class StatsMapController : MonoBehaviour
     public static LevelUp lvlUp = new LevelUp();
     // Start is called before the first frame update
     void Start(){
-<<<<<<< HEAD
 
         popupManager = FindObjectOfType<PopUpManager>();
 
-=======
-    
->>>>>>> main
         if (LoginScript.userLogged._id != null){
             userLogged = LoginScript.userLogged;
         }else{
