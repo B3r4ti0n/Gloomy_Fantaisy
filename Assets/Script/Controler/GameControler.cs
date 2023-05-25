@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameControler : MonoBehaviour
 {
@@ -14,10 +15,11 @@ public class GameControler : MonoBehaviour
     private GameObject canvasResult;
     [SerializeField]
     private TMP_Text resultText;
+    [SerializeField]
+    private TMP_Text rewardText;
     private PlayerControler playerControler;
     [SerializeField]
     private GameObject monster;
-    private GameObject player;
     private MonsterControler monsterControler;
     private bool playerTurn;
     private bool playerRun;
@@ -28,11 +30,34 @@ public class GameControler : MonoBehaviour
     [SerializeField]
     private Slider monsterHealthBar;
 
+    public static UserLogged userLogged = new UserLogged();
+
+
+
+    [SerializeField] private string url_update;
+    [SerializeField] private List<string> url_params_key_update;
+    [SerializeField] private List<string> url_params_value_update;
+
+    private int rewardGold;
+    private int rewardExp;
+
     // Start is called before the first frame update
     void Start()
     {
-        FemaleAvatar.SetActive(true);
-        playerControler = FemaleAvatar.GetComponent<PlayerControler>();
+        Debug.Log(StatsMapController.userLogged.name);
+        userLogged = StatsMapController.userLogged;
+        if (StatsMapController.userLogged.stats.race == "Orc")
+        {
+            MaleAvatar.SetActive(true);
+            playerControler = MaleAvatar.GetComponent<PlayerControler>();
+        }
+        else
+        {
+            FemaleAvatar.SetActive(true);
+            playerControler = FemaleAvatar.GetComponent<PlayerControler>();
+        }
+        playerControler.SetMaxhealth(userLogged.stats.health_point);
+        playerControler.SetSpeed(userLogged.stats.speed_value);
         playerIsAlive = true;
         playerRun = false;
         monsterTurn = false;
@@ -61,9 +86,11 @@ public class GameControler : MonoBehaviour
             monsterTurn = true;
         }
         playerHealthBar.maxValue = playerControler.GetMaxHealth();
-        playerHealthBar.value = playerControler.GetHealth();
+        playerHealthBar.value = playerControler.GetMaxHealth();
         monsterHealthBar.maxValue = monsterControler.GetMaxHealth();
-        monsterHealthBar.value = monsterControler.GetHealth();
+        monsterHealthBar.value = monsterControler.GetMaxHealth();
+        rewardGold = Random.Range(30, 70);
+        rewardExp = Random.Range(30, 70);
     }
 
     // Update is called once per frame
@@ -109,14 +136,16 @@ public class GameControler : MonoBehaviour
         if (playerTurn && !monsterTurn)
         {
             Weapon playerWeapon = playerControler.GetWeapon();
+            int minDamage = playerWeapon.MinDamage + (playerWeapon.MinDamage * (userLogged.stats.offensive_value / 100));
+            int maxDamage = playerWeapon.maxDamage + (playerWeapon.maxDamage * (userLogged.stats.offensive_value / 100));
             //Check if player use an elemental weakness of the monster
             if (monsterWeekness == playerWeapon.element)
             {
-                StartCoroutine(monsterControler.TakeDamage(Random.Range(playerWeapon.MinDamage, playerWeapon.maxDamage) * 2));
+                StartCoroutine(monsterControler.TakeDamage(Random.Range(minDamage, maxDamage) * 2));
             }
             else
             {
-                StartCoroutine(monsterControler.TakeDamage(Random.Range(playerWeapon.MinDamage, playerWeapon.maxDamage)));
+                StartCoroutine(monsterControler.TakeDamage(Random.Range(minDamage, maxDamage)));
             }
             //Update life bar of monster
             monsterHealthBar.value = monsterControler.GetHealth();
@@ -146,7 +175,7 @@ public class GameControler : MonoBehaviour
     //Launch animation dying for player
     IEnumerator MakePlayerDie()
     {
-        playerControler.Die(); 
+        playerControler.Die();
         yield return new WaitForSeconds(2);
     }
     //Choose the menu for finish
@@ -156,10 +185,12 @@ public class GameControler : MonoBehaviour
         if (playerRun)
         {
             resultText.text = "You run away !";
+
         }
         else if (playerIsAlive)
         {
             resultText.text = "You have triumphed !";
+            rewardText.text = "You gain " + rewardGold + " G, and " + rewardExp + " exp.";
         }
         else
         {
@@ -174,6 +205,25 @@ public class GameControler : MonoBehaviour
     {
         playerRun = true;
         StartCoroutine(FinishBattle());
+    }
+
+    public void quitBattle()
+    {
+        if( playerIsAlive && !playerRun){
+            userLogged.stats.gold = userLogged.stats.gold + rewardGold;
+            userLogged.stats.exp = userLogged.stats.exp + rewardExp;
+        }
+        url_params_value_update.Add(userLogged.stats._id);
+        url_params_value_update.Add(userLogged.stats.gold.ToString());
+        url_params_value_update.Add(userLogged.stats.exp.ToString());
+        MongoDBScript mongoDBScript = new MongoDBScript();
+        string updateResult = mongoDBScript.CreateUrlBodyRequest(url_params_key_update, url_params_value_update);
+        StartCoroutine(mongoDBScript.GetRequestPatch(url_update, updateResult, () =>
+        {
+            SceneManager.LoadScene("MapScene");
+            return false;
+        }));
+        
     }
 
 }
