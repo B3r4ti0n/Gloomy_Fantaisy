@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace Mapbox.Examples
 {
@@ -14,7 +14,14 @@ namespace Mapbox.Examples
         [SerializeField]
         Image _background; // Reference to the Image component for the background
 
+        [SerializeField]
+        GameObject prefabMap;
+
         private Dictionary<string, string> poiData; // Stores the data associated with the point of interest
+
+        private bool isPointerDown = false;
+        private float pointerDownTime = 0f;
+        private float clickDelay = 0.1f;
 
         public void Set(Dictionary<string, object> props)
         {
@@ -43,8 +50,7 @@ namespace Mapbox.Examples
 
             RefreshBackground(); // Refresh the background layout
         }
-
-        public void RefreshBackground()
+public void RefreshBackground()
         {
             RectTransform backgroundRect = _background.GetComponent<RectTransform>();
             LayoutRebuilder.ForceRebuildLayoutImmediate(backgroundRect); // Force the immediate rebuild of the layout for the background
@@ -52,8 +58,29 @@ namespace Mapbox.Examples
 
         void OnMouseDown()
         {
-            Debug.Log("Click detected!");
-            ClickTest();
+            isPointerDown = true;
+            pointerDownTime = Time.time;
+        }
+
+        void OnMouseUp()
+        {
+            isPointerDown = false;
+
+            if (Time.time - pointerDownTime <= clickDelay)
+            {
+                if (prefabMap.name == "LabelIcon")
+                {
+                    ClickTest();
+                }
+                else if (prefabMap.name == "SkeletonWarrior")
+                {
+                    SceneManager.LoadScene("PVEBattleScene");
+                }
+                else
+                {
+                    Debug.Log("no prefab");
+                }
+            }
         }
 
         void ClickTest()
