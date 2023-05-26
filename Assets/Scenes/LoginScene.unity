@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usernameInputField: {fileID: 337996240}
   passwordInputField: {fileID: 964184810}
-  url_test: http://10.160.33.51:3000/v1/users/login
+  url_test: http://83.199.134.203:3000/v1/users/login
   url_params_key_test:
   - name
   - password

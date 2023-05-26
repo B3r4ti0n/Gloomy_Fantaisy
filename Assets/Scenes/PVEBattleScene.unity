@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1646,7 +1646,7 @@ MonoBehaviour:
   monster: {fileID: 209798539903102352}
   playerHealthBar: {fileID: 1070054910}
   monsterHealthBar: {fileID: 763645533}
-  url_update: http://10.160.33.51:3000/v1/stats/update
+  url_update: http://83.199.134.203:3000/v1/stats/update
   url_params_key_update:
   - _id
   - gold
